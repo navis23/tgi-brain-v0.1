@@ -1,0 +1,30 @@
+{
+  "name": "tgi-brain",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.11.3",
+    "@supabase/supabase-js": "^2.101.1",
+    "@tailwindcss/vite": "^4.2.2",
+    "@vueuse/core": "^14.2.1",
+    "d3": "^7.9.0",
+    "md-editor-v3": "^6.4.1",
+    "nuxt": "^4.4.2",
+    "pinia": "^3.0.4",
+    "tailwindcss": "^4.2.2",
+    "vue": "^3.5.31",
+    "vue-router": "^5.0.4"
+  },
+  "devDependencies": {
+    "@iconify-json/lucide": "^1.2.101",
+    "@nuxt/icon": "^2.2.1",
+    "@types/d3": "^7.4.3"
+  }
+}
