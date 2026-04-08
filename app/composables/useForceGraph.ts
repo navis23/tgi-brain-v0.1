@@ -12,11 +12,18 @@ interface ForceGraphOptions {
 export function useForceGraph() {
   let simulation: d3.Simulation<GraphNode, GraphLink> | null = null
   let svg: d3.Selection<SVGSVGElement, unknown, null, undefined> | null = null
+  let tooltipEl: HTMLDivElement | null = null
+  let containerEl: HTMLElement | null = null
 
   const init = (options: ForceGraphOptions, nodes: GraphNode[], links: GraphLink[]) => {
     const { container, width, height, onNodeClick, activeNodeId } = options
+    containerEl = container
 
-    // Clear existing
+    // Clear existing (including previous tooltip)
+    if (tooltipEl) {
+      tooltipEl.remove()
+      tooltipEl = null
+    }
     d3.select(container).selectAll('*').remove()
 
     // Create SVG
@@ -191,6 +198,7 @@ export function useForceGraph() {
       .append('div')
       .attr('class', 'absolute pointer-events-none bg-brain-800/95 backdrop-blur-sm border border-brain-700/50 rounded-lg px-3 py-2 text-xs text-brain-200 shadow-xl opacity-0 transition-opacity duration-150 z-10')
       .style('position', 'absolute')
+    tooltipEl = tooltip.node() as HTMLDivElement
 
     nodeElements
       .on('mouseenter', (event, d) => {
@@ -232,6 +240,14 @@ export function useForceGraph() {
   const destroy = () => {
     simulation?.stop()
     simulation = null
+    if (tooltipEl) {
+      tooltipEl.remove()
+      tooltipEl = null
+    }
+    if (containerEl) {
+      d3.select(containerEl).selectAll('*').remove()
+      containerEl = null
+    }
     svg = null
   }
 

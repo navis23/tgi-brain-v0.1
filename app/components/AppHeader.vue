@@ -7,17 +7,6 @@
                 <Icon name="lucide:menu" class="w-6 h-6" />
             </button>
 
-            <!-- Search -->
-            <!-- <div class="flex-1 max-w-xl relative h-10">
-        <Icon name="lucide:search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brain-900" />
-        <input
-          v-model="searchQuery"
-          type="text"
-          placeholder="Query Database..."
-          class="w-full h-full pl-10 pr-4 py-2 bg-white border-2 border-brain-900 text-sm font-mono text-brain-900 placeholder:text-brain-400 focus:outline-none focus:bg-brain-50 shadow-[2px_2px_0px_#111] transition-all duration-200"
-        />
-      </div> -->
-
             <!-- Filter chips -->
             <div v-if="filterStore.hasActiveFilters" class="flex items-center gap-3">
                 <span v-if="activeEntityName"
@@ -51,11 +40,6 @@ defineEmits(['openCapture'])
 const filterStore = useFilterStore()
 const notesStore = useNotesStore()
 const isSidebarOpen = useState('sidebarOpen')
-
-const searchQuery = computed({
-    get: () => filterStore.searchQuery,
-    set: (val: string) => filterStore.setSearch(val),
-})
 
 const activeEntityName = computed(() => {
     if (!filterStore.activeEntityId) return null
