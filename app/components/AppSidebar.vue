@@ -11,113 +11,111 @@
     >
       <div
         v-if="isOpen"
-        class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+        class="fixed inset-0 bg-brain-900/40 z-40 md:hidden"
         @click="isOpen = false"
       />
     </Transition>
 
     <aside
-      class="fixed left-0 top-0 bottom-0 w-60 bg-brain-900/90 backdrop-blur-xl border-r border-brain-700/50 flex flex-col z-50 transition-transform duration-300 ease-in-out md:translate-x-0"
+      class="fixed left-0 top-0 bottom-0 w-64 bg-brain-50 border-r-2 border-brain-900 flex flex-col z-50 transition-transform duration-300 ease-in-out md:translate-x-0"
       :class="isOpen ? 'translate-x-0' : '-translate-x-full'"
     >
 
-    <!-- Logo -->
-    <div class="px-5 py-5 border-b border-brain-700/50 shrink-0">
+    <!-- Logo - Brutalist Header -->
+    <div class="px-6 py-6 border-b-2 border-brain-900 shrink-0 bg-brain-900 text-brain-50">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-linear-to-br from-entity-tgi to-entity-drc flex items-center justify-center shadow-lg shadow-entity-tgi/20 shrink-0">
-          <Icon name="lucide:brain" class="w-4.5 h-4.5 text-white" />
-        </div>
         <div class="flex-1 min-w-0">
-          <h1 class="text-sm font-bold text-brain-50 tracking-tight leading-tight">TGI BRAIN</h1>
-          <p class="text-[10px] text-brain-500 font-medium leading-tight">Internal Elixir #0</p>
+          <h1 class="text-xl font-display font-bold tracking-tight uppercase leading-none">THE ARCHIVE</h1>
+          <p class="text-[10px] font-mono mt-1 uppercase tracking-widest text-brain-400">TGI Intelligence</p>
         </div>
         <button
           @click="isOpen = false"
-          class="md:hidden p-1.5 text-brain-400 hover:text-brain-200 transition-colors"
+          class="md:hidden p-1 text-brain-400 hover:text-white border-2 border-transparent hover:border-white transition-colors"
         >
-          <Icon name="lucide:x" class="w-4 h-4" />
+          <Icon name="lucide:x" class="w-5 h-5" />
         </button>
       </div>
     </div>
 
     <!-- Navigation -->
-    <nav class="px-3 py-3 space-y-0.5 border-b border-brain-700/50 shrink-0">
-      <NuxtLink
+    <nav class="px-4 py-4 space-y-1.5 border-b-2 border-brain-900 shrink-0">
+       <NuxtLink
         to="/"
-        class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-brain-300 hover:text-brain-50 hover:bg-brain-700/50"
-        active-class="!bg-entity-tgi/15 !text-entity-tgi"
-        exact
+        @click="isOpen = false"
+        class="flex items-center gap-3 px-3 py-2.5 font-display font-medium text-sm transition-all duration-100 border-2 border-transparent"
+        active-class="!border-brain-900 !bg-brain-900 !text-brain-50 shadow-[2px_2px_0px_#111]"
+        :class="route.path === '/' ? '' : 'text-brain-800 hover:border-brain-900 hover:shadow-[2px_2px_0px_#111]'"
       >
-        <Icon name="lucide:layout-dashboard" class="w-4 h-4 shrink-0" />
-        <span>Dashboard</span>
+        <Icon name="lucide:file-stack" class="w-4 h-4 shrink-0" />
+        <span class="uppercase tracking-wider">Index</span>
       </NuxtLink>
+      
       <NuxtLink
         to="/graph"
-        class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-brain-300 hover:text-brain-50 hover:bg-brain-700/50"
-        active-class="!bg-entity-tgi/15 !text-entity-tgi"
+        @click="isOpen = false"
+        class="flex items-center gap-3 px-3 py-2.5 font-display font-medium text-sm transition-all duration-100 border-2 border-transparent"
+        active-class="!border-brain-900 !bg-brain-900 !text-brain-50 shadow-[2px_2px_0px_#111]"
+        :class="route.path === '/graph' ? '' : 'text-brain-800 hover:border-brain-900 hover:shadow-[2px_2px_0px_#111]'"
       >
         <Icon name="lucide:network" class="w-4 h-4 shrink-0" />
-        <span>Knowledge Graph</span>
+        <span class="uppercase tracking-wider">Topology</span>
       </NuxtLink>
+      
       <NuxtLink
         to="/notes"
-        class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-brain-300 hover:text-brain-50 hover:bg-brain-700/50"
-        active-class="!bg-entity-tgi/15 !text-entity-tgi"
+        @click="isOpen = false"
+        class="flex items-center gap-3 px-3 py-2.5 font-display font-medium text-sm transition-all duration-100 border-2 border-transparent"
+        active-class="!border-brain-900 !bg-brain-900 !text-brain-50 shadow-[2px_2px_0px_#111]"
+        :class="route.path === '/notes' ? '' : 'text-brain-800 hover:border-brain-900 hover:shadow-[2px_2px_0px_#111]'"
       >
         <Icon name="lucide:table-2" class="w-4 h-4 shrink-0" />
-        <span>Notes</span>
+        <span class="uppercase tracking-wider">Registers</span>
       </NuxtLink>
     </nav>
 
     <!-- Spacer: pushes entities + user to bottom -->
-    <div class="flex-1" />
-
-    <!-- Entity Quick Filters -->
-    <div class="px-3 py-3 border-t border-brain-700/50 shrink-0">
-      <p class="text-[10px] font-semibold text-brain-500 uppercase tracking-widest mb-2 px-2">Entities</p>
-      <div class="space-y-0.5">
-        <button
-          v-for="entity in entities"
-          :key="entity.id"
-          @click="handleEntityClick(entity.id)"
-          class="w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-xs transition-all duration-200 group cursor-pointer"
-          :class="filterStore.activeEntityId === entity.id
-            ? 'bg-brain-700/60 text-brain-50'
-            : 'text-brain-400 hover:text-brain-100 hover:bg-brain-800/60'"
-        >
-          <span
-            class="w-2 h-2 rounded-full shrink-0 transition-transform duration-200 group-hover:scale-125"
-            :style="{ backgroundColor: entity.color }"
-          />
-          <span class="truncate flex-1 text-left">{{ entity.name }}</span>
-          <span class="text-[10px] text-brain-600 tabular-nums font-medium">
-            {{ entityNoteCounts[entity.id] || 0 }}
-          </span>
-        </button>
-      </div>
+    <div class="flex-1 overflow-y-auto">
+        <!-- Entity Quick Filters -->
+        <div class="px-4 py-4 shrink-0">
+          <p class="text-[10px] font-mono font-bold text-brain-900 uppercase tracking-widest mb-3 px-1 border-b-2 border-brain-900 pb-1">Entities.idx</p>
+          <div class="space-y-1">
+            <button
+              v-for="entity in entities"
+              :key="entity.id"
+              @click="handleEntityClick(entity.id)"
+              class="w-full flex items-center gap-3 px-2 py-2 font-mono text-xs transition-all duration-100 cursor-pointer border-2"
+              :class="filterStore.activeEntityId === entity.id
+                ? 'border-brain-900 bg-brain-900 text-brain-50 shadow-[2px_2px_0px_#111]'
+                : 'border-transparent text-brain-800 hover:border-brain-900 hover:shadow-[2px_2px_0px_#111]'"
+            >
+              <span
+                class="w-3 h-3 border border-brain-900 shrink-0"
+                :style="{ backgroundColor: entity.color }"
+              />
+              <span class="truncate flex-1 text-left uppercase">{{ entity.name }}</span>
+              <span class="text-[10px] bg-brain-200 text-brain-900 px-1 border border-brain-900" :class="{'bg-brain-700 text-brain-50 border-brain-50': filterStore.activeEntityId === entity.id}">
+                {{ String(entityNoteCounts[entity.id] || 0).padStart(3, '0') }}
+              </span>
+            </button>
+          </div>
+        </div>
     </div>
 
-    <!-- User info -->
-    <div class="px-3 py-3 border-t border-brain-700/50 shrink-0">
-      <div class="flex items-center gap-2.5 px-2 py-0.5">
-        <div class="w-7 h-7 rounded-lg bg-brain-800 border border-brain-700/60 flex items-center justify-center shrink-0">
-          <Icon name="lucide:user" class="w-3.5 h-3.5 text-brain-400" />
-        </div>
+    <!-- User info / Footer -->
+    <div class="border-t-2 border-brain-900 shrink-0 bg-white">
+      <div class="flex items-center gap-3 px-4 py-3 border-b-2 border-brain-900">
         <div class="flex-1 min-w-0">
-          <p class="text-xs text-brain-300 truncate font-medium">{{ userName }}</p>
-          <p class="text-[10px] text-brain-600 truncate">{{ userEmail }}</p>
+          <p class="text-xs font-display font-bold text-brain-900 uppercase truncate">{{ userName }}</p>
+          <p class="text-[10px] font-mono text-brain-500 truncate">{{ userEmail }}</p>
         </div>
       </div>
-    </div>
-
-    <!-- Sign out -->
-    <div class="px-3 pb-4 shrink-0">
+      <!-- Sign out -->
       <button
         @click="handleSignOut"
-        class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-brain-500 hover:text-entity-enterbiner hover:bg-entity-enterbiner/8 border border-transparent hover:border-entity-enterbiner/20 transition-all duration-200 cursor-pointer group"
+        class="w-full flex items-center justify-center gap-2 px-4 py-3 font-display font-bold text-xs uppercase text-brain-900 hover:bg-brain-900 hover:text-white transition-colors cursor-pointer"
       >
-        <Icon name="lucide:log-out" class="w-3.5 h-3.5 shrink-0 group-hover:translate-x-0.5 transition-transform" />
-        Sign out
+        <Icon name="lucide:log-out" class="w-4 h-4 shrink-0" />
+        Terminate Session
       </button>
     </div>
 
@@ -139,14 +137,14 @@ const entityNoteCounts = computed(() => notesStore.entityNoteCounts)
 const userEmail = computed(() => user.value?.email || '')
 const userName = computed(() => {
   const email = user.value?.email || ''
-  return email.split('@')[0] || 'User'
+  return email.split('@')[0] || 'Operator'
 })
 
 const handleEntityClick = (entityId: string) => {
   filterStore.setEntityFilter(entityId)
   isOpen.value = false // Close sidebar on mobile after clicking
-  if (route.path !== '/graph') {
-    router.push('/graph')
+  if (route.path !== '/notes') {
+    router.push('/notes')
   }
 }
 

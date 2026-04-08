@@ -1,89 +1,82 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center relative overflow-hidden" data-layout="auth">
-    <!-- Animated background -->
-    <div class="absolute inset-0 bg-brain-950">
-      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-entity-tgi/10 rounded-full blur-3xl animate-pulse" />
-      <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-entity-drc/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s" />
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-entity-enterbiner/5 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s" />
-    </div>
+  <div class="min-h-screen flex items-center justify-center relative overflow-hidden bg-brain-50" data-layout="auth">
+    <!-- Grid background for The Archive -->
+    <div class="absolute inset-0 z-0 pointer-events-none opacity-10" style="background-size: 40px 40px; background-image: linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px);"></div>
 
     <!-- Login Card -->
     <div class="relative z-10 w-full max-w-md mx-4">
-      <div class="bg-brain-900/60 backdrop-blur-2xl border border-brain-700/50 rounded-2xl p-8 shadow-2xl">
+      <div class="brutal-card p-10">
         <!-- Logo -->
-        <div class="text-center mb-8">
-          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-entity-tgi to-entity-drc flex items-center justify-center mx-auto mb-4 shadow-lg shadow-entity-tgi/30">
-            <Icon name="lucide:brain" class="w-8 h-8 text-white" />
-          </div>
-          <h1 class="text-2xl font-bold text-brain-50 tracking-tight">TGI BRAIN</h1>
-          <p class="text-sm text-brain-400 mt-1">Conglomerate Knowledge System</p>
+        <div class="text-center mb-10 border-b-2 border-brain-900 pb-8">
+          <h1 class="text-3xl font-display font-bold text-brain-900 uppercase tracking-tighter">THE ARCHIVE</h1>
+          <p class="text-[10px] font-mono text-brain-500 mt-2 uppercase tracking-widest">TGI Intelligence System</p>
         </div>
 
         <!-- Toggle -->
-        <div class="flex bg-brain-800/60 rounded-xl p-1 mb-6">
+        <div class="flex border-2 border-brain-900 mb-8 p-1 bg-brain-100">
           <button
             @click="isSignUp = false"
-            class="flex-1 py-2 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer"
-            :class="!isSignUp ? 'bg-brain-700 text-brain-50 shadow-sm' : 'text-brain-400 hover:text-brain-300'"
+            class="flex-1 py-3 text-xs font-display font-bold uppercase transition-all duration-100 cursor-pointer"
+            :class="!isSignUp ? 'bg-brain-900 text-brain-50' : 'text-brain-600 hover:text-brain-900'"
           >
-            Sign In
+            Access
           </button>
           <button
             @click="isSignUp = true"
-            class="flex-1 py-2 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer"
-            :class="isSignUp ? 'bg-brain-700 text-brain-50 shadow-sm' : 'text-brain-400 hover:text-brain-300'"
+            class="flex-1 py-3 text-xs font-display font-bold uppercase transition-all duration-100 cursor-pointer"
+            :class="isSignUp ? 'bg-brain-900 text-brain-50' : 'text-brain-600 hover:text-brain-900'"
           >
-            Sign Up
+            Register
           </button>
         </div>
 
         <!-- Form -->
-        <form @submit.prevent="handleSubmit" class="space-y-4">
+        <form @submit.prevent="handleSubmit" class="space-y-5">
           <div>
-            <label class="block text-sm font-medium text-brain-300 mb-1.5">Email</label>
+            <label class="block text-[10px] font-mono font-bold text-brain-900 uppercase tracking-widest mb-2">Identification (Email)</label>
             <input
               v-model="email"
               type="email"
               required
-              placeholder="your@email.com"
-              class="w-full px-4 py-3 bg-brain-800/60 border border-brain-700/50 rounded-xl text-sm text-brain-100 placeholder:text-brain-500 focus:outline-none focus:border-entity-tgi/50 focus:ring-1 focus:ring-entity-tgi/20 transition-all duration-200"
+              placeholder="operator@tgicorp.com"
+              class="w-full px-4 py-3 bg-white border-2 border-brain-900 text-sm font-mono text-brain-900 placeholder:text-brain-400 focus:outline-none focus:bg-brain-100 transition-all duration-100"
             />
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-brain-300 mb-1.5">Password</label>
+            <label class="block text-[10px] font-mono font-bold text-brain-900 uppercase tracking-widest mb-2">Security Key</label>
             <input
               v-model="password"
               type="password"
               required
               placeholder="••••••••"
               minlength="6"
-              class="w-full px-4 py-3 bg-brain-800/60 border border-brain-700/50 rounded-xl text-sm text-brain-100 placeholder:text-brain-500 focus:outline-none focus:border-entity-tgi/50 focus:ring-1 focus:ring-entity-tgi/20 transition-all duration-200"
+              class="w-full px-4 py-3 bg-white border-2 border-brain-900 text-sm font-mono text-brain-900 placeholder:text-brain-400 focus:outline-none focus:bg-brain-100 transition-all duration-100"
             />
           </div>
 
           <!-- Error -->
-          <div v-if="errorMsg" class="flex items-center gap-2 px-4 py-3 bg-entity-enterbiner/10 border border-entity-enterbiner/20 rounded-xl text-sm text-entity-enterbiner">
-            <Icon name="lucide:alert-circle" class="w-4 h-4 shrink-0" />
-            {{ errorMsg }}
+          <div v-if="errorMsg" class="flex items-start gap-2 px-4 py-3 bg-[#FF3366] border-2 border-brain-900 text-xs font-mono font-bold text-white shadow-[2px_2px_0px_#111]">
+            <Icon name="lucide:alert-triangle" class="w-4 h-4 shrink-0 mt-0.5" />
+            <span class="leading-tight">{{ errorMsg }}</span>
           </div>
 
           <!-- Success -->
-          <div v-if="successMsg" class="flex items-center gap-2 px-4 py-3 bg-entity-mbink/10 border border-entity-mbink/20 rounded-xl text-sm text-entity-mbink">
-            <Icon name="lucide:check-circle" class="w-4 h-4 shrink-0" />
-            {{ successMsg }}
+          <div v-if="successMsg" class="flex items-start gap-2 px-4 py-3 bg-[#00C853] border-2 border-brain-900 text-xs font-mono font-bold text-white shadow-[2px_2px_0px_#111]">
+            <Icon name="lucide:check-square" class="w-4 h-4 shrink-0 mt-0.5" />
+            <span class="leading-tight">{{ successMsg }}</span>
           </div>
 
           <button
             type="submit"
             :disabled="isSubmitting"
-            class="w-full py-3 bg-gradient-to-r from-entity-tgi to-entity-drc rounded-xl text-sm font-semibold text-white shadow-lg shadow-entity-tgi/20 hover:shadow-entity-tgi/40 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            class="w-full py-4 bg-brain-900 text-brain-50 text-sm brutal-btn mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <span v-if="isSubmitting" class="flex items-center justify-center gap-2">
-              <Icon name="lucide:loader-2" class="w-4 h-4 animate-spin" />
-              {{ isSignUp ? 'Creating account...' : 'Signing in...' }}
+              <Icon name="lucide:loader" class="w-4 h-4 animate-spin" />
+              {{ isSignUp ? 'Allocating...' : 'Authenticating...' }}
             </span>
-            <span v-else>{{ isSignUp ? 'Create Account' : 'Sign In' }}</span>
+            <span v-else>{{ isSignUp ? 'Generate Credentials' : 'Initialize Session' }}</span>
           </button>
         </form>
       </div>
@@ -114,13 +107,13 @@ const handleSubmit = async () => {
   try {
     if (isSignUp.value) {
       await signUp(email.value, password.value)
-      successMsg.value = 'Account created! Check your email for confirmation.'
+      successMsg.value = 'Credentials generated. Await confirmation via email protocols.'
     } else {
       await signIn(email.value, password.value)
       router.push('/')
     }
   } catch (error: any) {
-    errorMsg.value = error.message || 'An error occurred'
+    errorMsg.value = error.message || 'System error. Access denied.'
   } finally {
     isSubmitting.value = false
   }

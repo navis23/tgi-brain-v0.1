@@ -1,82 +1,99 @@
 <template>
-    <div v-if="loading" class="flex flex-col items-center justify-center min-h-[50vh] text-brain-500">
-        <Icon name="lucide:loader-2" class="w-8 h-8 animate-spin mb-4 text-entity-sbs" />
-        <p class="text-sm font-medium">Loading Note...</p>
+    <div v-if="loading" class="flex flex-col items-center justify-center min-h-[50vh] text-brain-900">
+        <Icon name="lucide:loader" class="w-8 h-8 animate-spin mb-4" />
+        <p class="text-sm font-mono font-bold uppercase tracking-widest">Loading Record Data...</p>
     </div>
 
-    <div v-else-if="!note" class="flex flex-col items-center justify-center min-h-[50vh] text-brain-500">
-        <div class="w-16 h-16 rounded-2xl bg-brain-800/40 flex items-center justify-center mb-4">
-            <Icon name="lucide:file-question" class="w-8 h-8 text-brain-600 opacity-60" />
+    <div v-else-if="!note" class="flex flex-col items-center justify-center min-h-[50vh] text-brain-900">
+        <div
+            class="w-20 h-20 border-2 border-brain-900 bg-brain-100 flex items-center justify-center mb-6 shadow-[4px_4px_0px_#111]">
+            <Icon name="lucide:file-warning" class="w-10 h-10" />
         </div>
-        <p class="text-brain-300 font-medium text-lg">Note Not Found</p>
-        <p class="text-sm mt-1 mb-6">This note may have been deleted or the URL is incorrect.</p>
+        <p class="font-display font-bold text-2xl uppercase tracking-tighter">Record Not Found</p>
+        <p class="text-xs font-mono mt-2 mb-8">This record may have been expunged or the locator is invalid.</p>
         <NuxtLink to="/notes"
-            class="px-4 py-2 bg-brain-800 hover:bg-brain-700 text-brain-200 rounded-lg transition-colors text-sm font-medium">
-            Return to Notes
+            class="brutal-btn px-6 py-3 bg-white border-2 border-brain-900 text-brain-900 text-xs shadow-[2px_2px_0px_#111]">
+            Return to Index
         </NuxtLink>
     </div>
 
-    <article v-else class="max-w-4xl mx-auto w-full px-4 md:px-8 py-4 md:py-8">
+    <article v-else class="max-w-4xl mx-auto w-full px-6 md:px-10 py-4 md:py-6 bg-white brutal-card my-8">
         <!-- Header / Meta section -->
-        <header class="mb-4 md:mb-8 space-y-4 md:space-y-6">
+        <header class="mb-4 space-y-4 md:space-y-6">
 
             <!-- Top badges -->
-            <div class="flex items-center flex-wrap gap-2 text-sm">
-                <CategoryBadge :category="note.category" />
-                <span class="text-brain-700">•</span>
-                <StatusBadge :status="note.status" />
+            <div class="flex items-center flex-wrap gap-3 text-sm border-b-2 border-brain-900 pb-4">
+                <!-- Status & Category block -->
+                <div class="flex items-stretch border-2 border-brain-900 p-1">
+                    <CategoryBadge :category="note.category" class="rounded-none! shadow-none! border-none!" />
+                    <div class="w-px bg-brain-900 mx-2"></div>
+                    <StatusBadge :status="note.status" class="rounded-none! shadow-none! border-none!" />
+                </div>
             </div>
 
             <!-- Title -->
-            <h1 class="text-3xl md:text-4xl font-extrabold text-white leading-tight tracking-tight">
+            <h1
+                class="text-3xl md:text-5xl font-display font-bold text-brain-900 leading-none tracking-tighter uppercase mx-auto text-left">
                 {{ note.title }}
             </h1>
 
             <!-- Meta Info Row -->
-            <div
-                class="flex flex-col md:flex-row md:items-center gap-4 md:gap-8 border-y border-brain-800/50 py-4 mt-8">
+            <div class="flex flex-col md:flex-row md:items-start gap-6 md:gap-10 border-y-2 border-brain-900 py-4 mt-4">
 
                 <!-- Dates -->
-                <div class="flex items-center gap-4 text-xs">
-                    <div class="space-y-1">
-                        <p class="text-brain-600 font-medium uppercase tracking-widest text-[10px]">Created</p>
-                        <p class="text-brain-300 tabular-nums">{{ formatFullDate(note.created_at) }}</p>
+                <div class="flex items-center gap-6 text-xs w-full md:w-auto">
+                    <div class="space-y-2 flex-1 md:flex-none">
+                        <p
+                            class="text-brain-900 font-mono font-bold uppercase tracking-widest text-[10px] bg-brain-100 px-2 py-1 inline-block border border-brain-900">
+                            Originated</p>
+                        <p class="font-mono text-brain-900 font-bold tabular-nums pl-1">{{
+                            formatFullDate(note.created_at) }}</p>
                     </div>
-                    <div class="w-px h-6 bg-brain-800/60 hidden md:block"></div>
-                    <div class="space-y-1">
-                        <p class="text-brain-600 font-medium uppercase tracking-widest text-[10px]">Last Updated</p>
-                        <p class="text-brain-300 tabular-nums">{{ formatFullDate(note.updated_at) }}</p>
+                    <div class="w-px h-12 bg-brain-900 hidden md:block"></div>
+                    <div class="space-y-2 flex-1 md:flex-none relative">
+                        <p
+                            class="text-brain-900 font-mono font-bold uppercase tracking-widest text-[10px] bg-brain-100 px-2 py-1 inline-block border border-brain-900 transition-all">
+                            Revised</p>
+                        <p class="font-mono text-brain-900 font-bold tabular-nums pl-1">{{
+                            formatFullDate(note.updated_at) }}</p>
                     </div>
                 </div>
 
-                <div class="w-px h-6 bg-brain-800/60 hidden md:block"></div>
+                <div class="w-px h-12 bg-brain-900 hidden md:block"></div>
 
                 <!-- Words -->
-                <div class="space-y-1 text-xs">
-                    <p class="text-brain-600 font-medium uppercase tracking-widest text-[10px]">Length</p>
-                    <p class="text-brain-300 tabular-nums">{{ wordCount(note.content) }} words</p>
+                <div class="space-y-2 text-xs flex-1 md:flex-none">
+                    <p
+                        class="text-brain-900 font-mono font-bold uppercase tracking-widest text-[10px] bg-brain-100 px-2 py-1 inline-block border border-brain-900">
+                        Volume</p>
+                    <p class="font-mono text-brain-900 font-bold tabular-nums pl-1">{{
+                        String(wordCount(note.content)).padStart(4, '0') }} WRD</p>
                 </div>
 
             </div>
 
             <!-- Entities -->
-            <div class="pt-2" v-if="note.entities && note.entities.length > 0">
-                <p class="text-[10px] font-semibold text-brain-600 uppercase tracking-widest mb-3">Linked Entities</p>
+            <div class="" v-if="note.entities && note.entities.length > 0">
+                <p
+                    class="text-[10px] font-mono font-bold text-brain-900 uppercase tracking-widest mb-2 inline-block bg-brain-100 px-2 py-1 border border-brain-900">
+                    Cross-Referenced Entities</p>
                 <div class="flex flex-wrap gap-2">
                     <EntityBadge v-for="entity in note.entities" :key="entity.id" :entity="entity"
-                        class="px-2.5 py-1 text-xs!" />
+                        class="px-3 py-1.5 text-xs! rounded-none! border-2! border-brain-900! shadow-[2px_2px_0px_#111]!" />
                 </div>
             </div>
         </header>
 
         <!-- Main Markdown Content -->
+        <!-- Switch MDPreview theme to light and apply white-paper prose styles -->
         <div
-            class="prose prose-invert prose-brain max-w-none prose-headings:font-bold prose-a:text-entity-sbs prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl">
+            class="prose prose-sm md:prose-base max-w-none prose-brain font-sans text-brain-900 pt-4 border-t-2 border-brain-900 dashed-border relative">
             <ClientOnly>
-                <MdPreview :model-value="note.content" theme="dark" :editor-id="`read-preview-${note.id}`"
-                    class="bg-transparent! text-base md:text-lg leading-relaxed!" />
+                <MdPreview :model-value="note.content" theme="light" :editor-id="`read-preview-${note.id}`"
+                    class="bg-transparent! text-brain-900! md:text-lg leading-relaxed!" />
                 <template #fallback>
-                    <div class="whitespace-pre-wrap text-brain-200 text-lg leading-relaxed">{{ note.content }}</div>
+                    <div class="whitespace-pre-wrap font-mono text-brain-900 text-sm leading-relaxed">{{ note.content }}
+                    </div>
                 </template>
             </ClientOnly>
         </div>
@@ -89,10 +106,10 @@
         <!-- Top Nav Actions (Teleported to layout) -->
         <Teleport to="#reading-header-actions">
             <button @click="editNote"
-                class="flex items-center gap-1.5 px-3 py-1.5 md:px-4 md:py-2 rounded-lg md:rounded-xl text-xs md:text-sm font-bold bg-entity-sbs/20 hover:bg-entity-sbs/30 transition-colors shadow-sm cursor-pointer border border-entity-sbs/50 text-entity-sbs">
-                <Icon name="lucide:pencil" class="w-3.5 h-3.5 md:w-4 md:h-4" />
-                <span class="hidden md:inline">Edit Note</span>
-                <span class="md:hidden">Edit</span>
+                class="brutal-btn flex items-center gap-2 px-6 py-2 border-2 border-brain-900 bg-brain-900 text-white shadow-[2px_2px_0px_#F4F4F0] cursor-pointer text-xs">
+                <Icon name="lucide:pencil" class="w-4 h-4" />
+                <span class="hidden md:inline font-display font-bold uppercase tracking-widest">Amend Record</span>
+                <span class="md:hidden font-display font-bold uppercase">Amend</span>
             </button>
         </Teleport>
     </article>
@@ -117,7 +134,7 @@ const selectedEditNote = ref<Note | null>(null)
 const note = computed(() => notesStore.notes.find(n => n.id === noteId) || null)
 
 useHead({
-    title: computed(() => note.value ? `${note.value.title} — TGI BRAIN` : 'Note — TGI BRAIN')
+    title: computed(() => note.value ? `${note.value.title} — Archive` : 'Reading — Archive')
 })
 
 const editNote = () => {
@@ -131,9 +148,9 @@ const wordCount = (content: string) => content.trim().split(/\s+/).filter(Boolea
 const formatFullDate = (dateStr: string) => {
     if (!dateStr) return '—'
     return new Date(dateStr).toLocaleString('en-US', {
-        month: 'short', day: 'numeric', year: 'numeric',
-        hour: '2-digit', minute: '2-digit',
-    })
+        month: '2-digit', day: '2-digit', year: 'numeric',
+        hour: '2-digit', minute: '2-digit', hour12: false
+    }).replace(',', ' //')
 }
 
 onMounted(async () => {
@@ -147,18 +164,46 @@ onMounted(async () => {
 </script>
 
 <style>
-/* Custom prose styling overrides for the reader */
+/* Custom editorial prose styling for Light Mode Neobrutalism */
 .prose-brain h1,
 .prose-brain h2,
-.prose-brain h3 {
-    color: #f8fafc;
-    margin-top: 2em;
-    margin-bottom: 1em;
+.prose-brain h3,
+.prose-brain h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    color: #111111;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    border-bottom: 2px solid #111111;
+    padding-bottom: 0.25em;
 }
 
 .prose-brain p {
-    color: #e2e8f0;
+    color: #1c1c1c;
     margin-bottom: 1.5em;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.prose-brain a {
+    color: #4B4DED;
+    text-decoration: none;
+    border-bottom: 2px solid #4B4DED;
+    font-weight: 700;
+    transition: all 0.1s ease;
+}
+
+.prose-brain a:hover {
+    background-color: #4B4DED;
+    color: white;
+}
+
+.prose-brain img {
+    border: 2px solid #111111;
+    box-shadow: 4px 4px 0px #111111;
+    border-radius: 0px !important;
 }
 
 /* Prevent unnatural word breaking in the md-editor while allowing long links to wrap */
@@ -169,18 +214,57 @@ onMounted(async () => {
 }
 
 .prose-brain blockquote {
-    border-left-color: #3b82f6;
-    /* Adjust to match theme if needed */
-    background: rgba(15, 23, 42, 0.4);
-    padding: 1rem;
-    border-radius: 0 0.5rem 0.5rem 0;
-    color: #cbd5e1;
+    border-left: 4px solid #111111;
+    background: #f0f0f0;
+    padding: 1.5rem;
+    font-style: italic;
+    color: #3f3f3f;
+    font-family: 'DM Sans', serif;
 }
 
 .prose-brain code {
-    color: #60a5fa;
-    background: rgba(15, 23, 42, 0.8);
-    padding: 0.125rem 0.25rem;
-    border-radius: 0.25rem;
+    color: #111111;
+    background: #e5e5e5;
+    border: 1px solid #111111;
+    padding: 0.125rem 0.35rem;
+    border-radius: 0px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: bold;
+}
+
+.prose-brain pre {
+    background: #111111 !important;
+    border: 2px solid #111111;
+    border-radius: 0px;
+    box-shadow: 4px 4px 0px #d4d4d4;
+}
+
+.prose-brain pre code {
+    background: transparent;
+    color: #f0f0f0;
+    border: none;
+}
+
+.prose-brain ul {
+    list-style-type: square;
+    padding-left: 1.5rem;
+    margin-bottom: 1.5em;
+}
+
+.prose-brain ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin-bottom: 1.5em;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: semibold;
+}
+
+.prose-brain li {
+    margin-bottom: 0.5em;
+    color: #1c1c1c;
+}
+
+.prose-brain li > p {
+    margin-bottom: 0.25em;
 }
 </style>
