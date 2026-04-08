@@ -126,8 +126,8 @@ export const useNotesStore = defineStore('notes', () => {
             .filter((e): e is Entity => e !== undefined),
         }
       })
-    } catch (err: any) {
-      error.value = err.message
+    } catch (err: unknown) {
+      error.value = err instanceof Error ? err.message : 'Failed to fetch notes'
     } finally {
       loading.value = false
     }
@@ -193,21 +193,25 @@ export const useNotesStore = defineStore('notes', () => {
 
     // Update entity mappings if provided
     if (entityIds !== undefined) {
-      // Delete existing
-      await supabase
+      // Delete existing mappings
+      const { error: delMapErr } = await supabase
         .from('tgibrain_note_entities')
         .delete()
         .eq('note_id', id)
 
-      // Insert new
+      if (delMapErr) throw delMapErr
+
+      // Insert new mappings
       if (entityIds.length > 0) {
         const mappings = entityIds.map(entity_id => ({
           note_id: id,
           entity_id,
         }))
-        await supabase
+        const { error: insertMapErr } = await supabase
           .from('tgibrain_note_entities')
           .insert(mappings)
+
+        if (insertMapErr) throw insertMapErr
       }
     }
 

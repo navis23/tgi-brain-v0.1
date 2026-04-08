@@ -101,8 +101,14 @@
                 v-model="form.title"
                 type="text"
                 placeholder="RECORD TITLE DIRECTIVE"
-                class="w-full text-3xl md:text-5xl font-display font-bold bg-transparent text-brain-900 placeholder:text-brain-300 focus:outline-none uppercase tracking-tighter shrink-0 border-b-2 border-brain-900 pb-2 border-dashed"
+                class="w-full text-3xl md:text-5xl font-display font-bold bg-transparent text-brain-900 placeholder:text-brain-300 focus:outline-none uppercase tracking-tighter shrink-0 border-b-2 pb-2 border-dashed"
+                :class="titleError ? 'border-[#FF3366]' : 'border-brain-900'"
+                @input="titleError = false"
               />
+              <p v-if="titleError" class="text-[10px] font-mono font-bold text-[#FF3366] uppercase mt-1 flex items-center gap-1.5">
+                <Icon name="lucide:alert-triangle" class="w-3.5 h-3.5" />
+                Title is required
+              </p>
               
               <!-- Editor -->
               <div class="flex-1 -mx-2 md:-mx-8">
@@ -260,6 +266,7 @@ const props = defineProps<{ editNote?: Note | null }>()
 const emit = defineEmits(['close'])
 
 const notesStore = useNotesStore()
+const toast = useToast()
 
 const isOpen = ref(false)
 const isSaving = ref(false)
@@ -318,19 +325,27 @@ const toggleEntity = (id: string) => {
   entityError.value = false
 }
 
+const titleError = ref(false)
+
 const handleSave = async () => {
-  if (form.entityIds.length === 0) {
-    entityError.value = true
-    showMobileProps.value = true // Automatically flip to properties on mobile to show the error
+  saveError.value = null
+  entityError.value = false
+  titleError.value = false
+
+  // Validate required fields
+  if (!form.title.trim()) {
+    titleError.value = true
+    titleInput.value?.focus()
     return
   }
 
-  if (!form.title.trim()) {
-    form.title = 'UNTITLED DATA'
+  if (form.entityIds.length === 0) {
+    entityError.value = true
+    showMobileProps.value = true
+    return
   }
 
   isSaving.value = true
-  saveError.value = null
   try {
     if (props.editNote) {
       await notesStore.updateNote(
@@ -347,9 +362,12 @@ const handleSave = async () => {
         form.entityIds
       )
     }
+    toast.success(props.editNote ? 'Record amended' : 'Record generated')
     close()
-  } catch (err: any) {
-    saveError.value = err?.message || 'Transaction failed. Subsystem error.'
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : 'Transaction failed. Subsystem error.'
+    saveError.value = msg
+    toast.error(msg)
     console.error('Failed to save note:', err)
   } finally {
     isSaving.value = false

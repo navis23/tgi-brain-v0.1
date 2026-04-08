@@ -3,6 +3,7 @@ import type { User } from '@supabase/supabase-js'
 const currentUser = ref<User | null>(null)
 const isLoading = ref(true)
 const isInitialized = ref(false)
+let authSubscription: { unsubscribe: () => void } | null = null
 
 export const useAuth = () => {
   const supabase = useSupabase()
@@ -17,9 +18,12 @@ export const useAuth = () => {
       const { data: { session } } = await supabase.auth.getSession()
       currentUser.value = session?.user ?? null
 
-      supabase.auth.onAuthStateChange((_event, session) => {
+      // Unsubscribe previous listener if any, then register new one
+      authSubscription?.unsubscribe()
+      const { data } = supabase.auth.onAuthStateChange((_event, session) => {
         currentUser.value = session?.user ?? null
       })
+      authSubscription = data.subscription
     } catch (error) {
       console.error('Auth initialization error:', error)
     } finally {

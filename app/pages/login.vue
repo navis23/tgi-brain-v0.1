@@ -112,8 +112,8 @@ const handleSubmit = async () => {
       await signIn(email.value, password.value)
       router.push('/')
     }
-  } catch (error: any) {
-    errorMsg.value = error.message || 'System error. Access denied.'
+  } catch (error: unknown) {
+    errorMsg.value = error instanceof Error ? error.message : 'System error. Access denied.'
   } finally {
     isSubmitting.value = false
   }
