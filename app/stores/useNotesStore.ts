@@ -138,7 +138,8 @@ export const useNotesStore = defineStore('notes', () => {
     content: string,
     category: NoteCategory,
     status: NoteStatus,
-    entityIds: string[]
+    entityIds: string[],
+    source?: string | null
   ) => {
     const supabase = getSupabase()
     const { user } = useAuth()
@@ -152,6 +153,7 @@ export const useNotesStore = defineStore('notes', () => {
         content,
         category,
         status,
+        source: source || null,
         user_id: user.value.id,
       })
       .select()
@@ -180,7 +182,7 @@ export const useNotesStore = defineStore('notes', () => {
 
   const updateNote = async (
     id: string,
-    updates: Partial<Pick<Note, 'title' | 'content' | 'category' | 'status'>>,
+    updates: Partial<Pick<Note, 'title' | 'content' | 'category' | 'status' | 'source'>>,
     entityIds?: string[]
   ) => {
     const supabase = getSupabase()
