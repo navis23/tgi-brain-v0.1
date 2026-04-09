@@ -39,7 +39,7 @@ NUXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 
 Supabase tables (all prefixed `tgibrain_`):
 - `tgibrain_entities` — 6 fixed business entities (TGI, Enterbiner, SBS, Mbing Farm, TOS, DRC Trans), each with a brand color
-- `tgibrain_notes` — notes with `category` (`strategic|technical|marketing|financial|operations`) and `status` (`raw_idea|active_pipeline|shelved`)
+- `tgibrain_notes` — notes with `category` (`strategic|technical|marketing|financial|operations`), `status` (`raw_idea|active_pipeline|shelved|committed`), and optional `source` (free-text provenance)
 - `tgibrain_note_entities` — many-to-many join between notes and entities
 
 Row Level Security is enabled: users can only CRUD their own notes; entities are read-only for all authenticated users.

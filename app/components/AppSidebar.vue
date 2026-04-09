@@ -26,7 +26,10 @@
       <div class="flex items-center gap-3">
         <div class="flex-1 min-w-0">
           <h1 class="text-xl font-display font-bold tracking-tight uppercase leading-none">THE ARCHIVE</h1>
-          <p class="text-[10px] font-mono mt-1 uppercase tracking-widest text-brain-400">TGI Intelligence</p>
+          <div class="flex items-center gap-2 mt-1">
+            <p class="text-[10px] font-mono uppercase tracking-widest text-brain-400">TGI Intelligence</p>
+            <span class="text-[9px] font-mono font-bold uppercase tracking-wider text-brain-900 bg-brain-400 px-1.5 py-0.5 leading-none">v{{ appVersion }}</span>
+          </div>
         </div>
         <button
           @click="isOpen = false"
@@ -129,8 +132,10 @@ const filterStore = useFilterStore()
 const { user, signOut } = useAuth()
 const router = useRouter()
 const route = useRoute()
+const config = useRuntimeConfig()
 
 const isOpen = useState('sidebarOpen', () => false)
+const appVersion = computed(() => config.public.appVersion || '0.0.0')
 
 const entities = computed(() => notesStore.entities)
 const entityNoteCounts = computed(() => notesStore.entityNoteCounts)
