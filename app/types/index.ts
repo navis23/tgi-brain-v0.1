@@ -9,7 +9,7 @@ export interface Entity {
 }
 
 export type NoteCategory = 'strategic' | 'technical' | 'marketing' | 'financial' | 'operations'
-export type NoteStatus = 'raw_idea' | 'active_pipeline' | 'shelved'
+export type NoteStatus = 'raw_idea' | 'active_pipeline' | 'shelved' | 'committed'
 
 export interface Note {
   id: string
@@ -83,13 +83,15 @@ export const STATUS_COLORS: Record<NoteStatus, string> = {
   raw_idea: '#94a3b8',
   active_pipeline: '#22d3ee',
   shelved: '#78716c',
+  committed: '#10b981',
 }
 
 export const STATUS_LABELS: Record<NoteStatus, string> = {
   raw_idea: 'Raw Idea',
   active_pipeline: 'Active Pipeline',
   shelved: 'Shelved',
+  committed: 'Committed',
 }
 
 export const CATEGORIES: NoteCategory[] = ['strategic', 'technical', 'marketing', 'financial', 'operations']
-export const STATUSES: NoteStatus[] = ['raw_idea', 'active_pipeline', 'shelved']
+export const STATUSES: NoteStatus[] = ['raw_idea', 'active_pipeline', 'shelved', 'committed']
