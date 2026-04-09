@@ -72,6 +72,22 @@
 
             </div>
 
+            <!-- Source -->
+            <div v-if="note.source" class="text-xs">
+                <p class="text-brain-900 font-mono font-bold uppercase tracking-widest text-[10px] bg-brain-100 px-2 py-1 inline-block border border-brain-900 mb-2">
+                    Source</p>
+                <p class="font-mono text-brain-600 pl-1">
+                    <a v-if="note.source.startsWith('http://') || note.source.startsWith('https://')"
+                       :href="note.source"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="text-[#4B4DED] border-b border-[#4B4DED] hover:bg-[#4B4DED] hover:text-white transition-all font-bold">
+                        {{ note.source }}
+                    </a>
+                    <span v-else>{{ note.source }}</span>
+                </p>
+            </div>
+
             <!-- Entities -->
             <div class="" v-if="note.entities && note.entities.length > 0">
                 <p

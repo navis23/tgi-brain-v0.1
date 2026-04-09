@@ -110,6 +110,14 @@
                 Title is required
               </p>
               
+              <!-- Source -->
+              <input
+                v-model="form.source"
+                type="text"
+                placeholder="e.g. claude.ai/share/…, Claude Code session, Meeting 2026-04-09"
+                class="w-full px-0 py-2 bg-transparent text-sm font-mono text-brain-600 placeholder:text-brain-300 focus:outline-none border-b border-brain-300 border-dashed focus:border-brain-900 transition-colors"
+              />
+
               <!-- Editor -->
               <div class="flex-1 -mx-2 md:-mx-8">
                 <ClientOnly>
@@ -290,6 +298,7 @@ const form = reactive({
   category: 'strategic' as NoteCategory,
   status: 'raw_idea' as NoteStatus,
   entityIds: [] as string[],
+  source: '',
 })
 
 const resetForm = () => {
@@ -298,6 +307,7 @@ const resetForm = () => {
   form.category = 'strategic'
   form.status = 'raw_idea'
   form.entityIds = []
+  form.source = ''
   entityError.value = false
   saveError.value = null
   showMobileProps.value = false
@@ -350,7 +360,7 @@ const handleSave = async () => {
     if (props.editNote) {
       await notesStore.updateNote(
         props.editNote.id,
-        { title: form.title, content: form.content, category: form.category, status: form.status },
+        { title: form.title, content: form.content, category: form.category, status: form.status, source: form.source || null },
         form.entityIds
       )
     } else {
@@ -359,7 +369,8 @@ const handleSave = async () => {
         form.content,
         form.category,
         form.status,
-        form.entityIds
+        form.entityIds,
+        form.source || null
       )
     }
     toast.success(props.editNote ? 'Record amended' : 'Record generated')
@@ -400,6 +411,7 @@ onMounted(() => {
       form.category = props.editNote.category
       form.status = props.editNote.status
       form.entityIds = props.editNote.entity_ids ? [...props.editNote.entity_ids] : []
+      form.source = props.editNote.source || ''
     }
     open()
   }

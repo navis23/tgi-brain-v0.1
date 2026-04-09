@@ -17,6 +17,7 @@ export interface Note {
   content: string
   category: NoteCategory
   status: NoteStatus
+  source: string | null
   user_id: string
   created_at: string
   updated_at: string
