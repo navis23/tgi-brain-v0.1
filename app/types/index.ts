@@ -57,7 +57,7 @@ export const ENTITY_COLORS: Record<string, string> = {
   tgi: '#6366f1',
   enterbiner: '#f43f5e',
   sbs: '#0ea5e9',
-  'mbink-farm': '#22c55e',
+  'mbing-farm': '#22c55e',
   tos: '#f59e0b',
   'drc-trans': '#a855f7',
 }
