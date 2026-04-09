@@ -15,7 +15,7 @@
             </div>
 
             <!-- High Level Stats Row -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 shrink-0">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 shrink-0">
                 <!-- Note Stat -->
                 <div class="brutal-card flex flex-col justify-between p-5 bg-white h-32">
                     <div class="flex items-start justify-between">
@@ -41,6 +41,20 @@
                     <div>
                         <p class="text-4xl md:text-5xl font-display font-bold text-white tabular-nums leading-none">{{
                             notesStore.loading ? '—' : stats.pipeline }}</p>
+                    </div>
+                </div>
+
+                <!-- Committed Stat -->
+                <div
+                    class="brutal-card flex flex-col justify-between p-5 bg-[#10b981] text-white h-32 border-2 border-brain-900 shadow-[4px_4px_0px_#111]">
+                    <div class="flex items-start justify-between gap-2">
+                        <span
+                            class="text-[10px] font-mono font-bold uppercase tracking-widest bg-white/20 px-2 py-1 border border-white">Committed</span>
+                        <Icon name="lucide:check-square" class="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                        <p class="text-4xl md:text-5xl font-display font-bold text-white tabular-nums leading-none">{{
+                            notesStore.loading ? '—' : stats.committed }}</p>
                     </div>
                 </div>
 
@@ -224,13 +238,15 @@ const selectedNote = ref<Note | null>(null)
 const stats = computed(() => {
     let pipeline = 0
     let shelved = 0
+    let committed = 0
 
     notesStore.notes.forEach(n => {
         if (n.status === 'active_pipeline') pipeline++
         if (n.status === 'shelved') shelved++
+        if (n.status === 'committed') committed++
     })
 
-    return { pipeline, shelved }
+    return { pipeline, shelved, committed }
 })
 
 // Get top 8 most recently updated notes
