@@ -100,6 +100,11 @@
             </div>
         </header>
 
+        <!-- Related Notes -->
+        <div class="pt-4 border-t-2 border-brain-900 border-dashed">
+            <RelatedNotes :note-id="note.id" />
+        </div>
+
         <!-- Main Markdown Content -->
         <!-- Switch MDPreview theme to light and apply white-paper prose styles -->
         <div

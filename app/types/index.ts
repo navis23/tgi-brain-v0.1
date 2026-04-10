@@ -30,6 +30,31 @@ export interface NoteEntity {
   entity_id: string
 }
 
+export type NoteRelationType = 'supersedes' | 'followup_of' | 'child_of'
+
+export interface NoteRelation {
+  id: string
+  from_note_id: string
+  to_note_id: string
+  relation_type: NoteRelationType
+  created_at: string
+  created_by: string
+}
+
+export const RELATION_TYPE_LABELS: Record<NoteRelationType, string> = {
+  supersedes: 'Supersedes',
+  followup_of: 'Follow-up of',
+  child_of: 'Child of',
+}
+
+export const RELATION_TYPE_REVERSE_LABELS: Record<NoteRelationType, string> = {
+  supersedes: 'Superseded by',
+  followup_of: 'Has follow-up',
+  child_of: 'Parent of',
+}
+
+export const RELATION_TYPES: NoteRelationType[] = ['supersedes', 'followup_of', 'child_of']
+
 export interface SynergyLink {
   source: string
   target: string
