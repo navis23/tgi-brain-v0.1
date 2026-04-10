@@ -1,4 +1,4 @@
-import type { Entity, Note, NoteCategory, NoteStatus, SynergyLink } from '~/types'
+import type { Entity, Note, NoteCategory, NoteStatus, NoteRelation, NoteRelationType, SynergyLink } from '~/types'
 
 export const useNotesStore = defineStore('notes', () => {
   // Lazy getter to avoid circular / SSR issues
@@ -231,6 +231,39 @@ export const useNotesStore = defineStore('notes', () => {
     await fetchNotes()
   }
 
+  // --- Relations ---
+
+  const fetchRelationsForNote = async (noteId: string): Promise<NoteRelation[]> => {
+    const supabase = getSupabase()
+    const { data, error: err } = await supabase
+      .from('tgibrain_note_relations')
+      .select('*')
+      .or(`from_note_id.eq.${noteId},to_note_id.eq.${noteId}`)
+      .order('created_at', { ascending: false })
+
+    if (err) throw err
+    return (data || []) as NoteRelation[]
+  }
+
+  const createRelation = async (fromNoteId: string, toNoteId: string, relationType: NoteRelationType) => {
+    const supabase = getSupabase()
+    const { error: err } = await supabase
+      .from('tgibrain_note_relations')
+      .insert({ from_note_id: fromNoteId, to_note_id: toNoteId, relation_type: relationType })
+
+    if (err) throw err
+  }
+
+  const deleteRelation = async (relationId: string) => {
+    const supabase = getSupabase()
+    const { error: err } = await supabase
+      .from('tgibrain_note_relations')
+      .delete()
+      .eq('id', relationId)
+
+    if (err) throw err
+  }
+
   return {
     notes,
     entities,
@@ -244,5 +277,8 @@ export const useNotesStore = defineStore('notes', () => {
     createNote,
     updateNote,
     deleteNote,
+    fetchRelationsForNote,
+    createRelation,
+    deleteRelation,
   }
 })
