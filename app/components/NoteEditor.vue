@@ -1,7 +1,7 @@
 <template>
   <div class="relative min-h-dvh bg-white flex flex-col">
     <!-- Top bar -->
-    <header class="shrink-0 sticky top-0 z-30 bg-brain-50 border-b-2 border-brain-900">
+    <header class="shrink-0 sticky top-0 z-30 bg-brain-50 border-b-2 border-brain-900 safe-top">
       <div class="flex items-center gap-3 px-4 md:px-6 py-3">
         <button
           @click="onCancel"
@@ -327,7 +327,7 @@ onUnmounted(() => {
    Opaque background + hard border + shadow so content visibly passes *behind* it. */
 #note-editor .md-editor-toolbar-wrapper {
   position: sticky !important;
-  top: 57px;
+  top: calc(57px + env(safe-area-inset-top, 0px));
   z-index: 25;
   background: #FAF9F6 !important;
   border-bottom: 2px solid #111 !important;

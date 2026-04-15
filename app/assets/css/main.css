@@ -75,6 +75,23 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Prevent iOS Safari/Chrome from auto-zooming when focusing inputs.
+     iOS zooms any input whose computed font-size is < 16px. */
+  @media (max-width: 768px) {
+    input, textarea, select {
+      font-size: 16px;
+    }
+  }
+
+  /* Safe-area padding for sticky top bars so they clear the iOS Dynamic
+     Island / notch when running as an installed PWA. */
+  .safe-top {
+    padding-top: max(env(safe-area-inset-top), 0px);
+  }
+  .safe-bottom {
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+  }
+
   /* Structural headings */
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);

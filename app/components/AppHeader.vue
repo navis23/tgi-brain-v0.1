@@ -1,5 +1,5 @@
 <template>
-    <header class="sticky top-0 z-30 bg-brain-100 border-b-2 border-brain-900">
+    <header class="sticky top-0 z-30 bg-brain-100 border-b-2 border-brain-900 safe-top">
         <div class="flex items-center gap-4 px-6 py-4">
             <!-- Mobile Menu Toggle -->
             <button @click="isSidebarOpen = true"
