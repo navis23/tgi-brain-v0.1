@@ -26,6 +26,15 @@ export default defineNuxtConfig({
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap' },
         { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
         { rel: 'mask-icon', href: '/pwa-icon.svg', color: '#111111' }
+      ],
+      // Capture `beforeinstallprompt` as early as possible — before the JS
+      // bundle loads. Chrome fires it during initial page load; if we wait
+      // for the Nuxt plugin or any component's onMounted we miss it.
+      script: [
+        {
+          innerHTML: `window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();window.__pwaPrompt=e;});`,
+          type: 'text/javascript',
+        }
       ]
     }
   },
@@ -67,8 +76,8 @@ export default defineNuxtConfig({
       lang: 'en',
       categories: ['productivity', 'business'],
       icons: [
-        { src: '/pwa-192x192.png', sizes: '192x192', type: 'image/png' },
-        { src: '/pwa-512x512.png', sizes: '512x512', type: 'image/png' },
+        { src: '/pwa-192x192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: '/pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
         { src: '/pwa-maskable-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
       ],
     },
