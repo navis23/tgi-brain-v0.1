@@ -90,10 +90,15 @@ export default defineNuxtConfig({
       skipWaiting: true,
       clientsClaim: true,
       cleanupOutdatedCaches: true,
-      // NOTE: no `navigateFallback: '/'` — Nuxt SPA precaches `index.html`
-      // under that filename, not under `/`, so `createHandlerBoundToURL('/')`
-      // throws `non-precached-url`. Handle navigations via runtime caching
-      // (NetworkFirst) below instead.
+      // @vite-pwa/nuxt injects `navigateFallback: '/'` as a default for Nuxt
+      // SPAs, which calls `createHandlerBoundToURL('/')` — this throws
+      // `non-precached-url` unless `/` is actually in the precache. Nuxt's
+      // SPA shell is rendered by Nitro at request time, so there's no static
+      // index.html in the output. We add `/` as an explicit precache entry
+      // with a per-build revision so Workbox has something to serve.
+      additionalManifestEntries: [
+        { url: '/', revision: `${pkg.version}-${Date.now()}` },
+      ],
       runtimeCaching: [
         // SPA navigations: always try network, fall back to cache offline.
         {
