@@ -42,7 +42,17 @@ export default defineNuxtConfig({
     }
   },
 
-  css: ['~/assets/css/main.css'],
+  css: [
+    '~/assets/css/main.css',
+    // Load md-editor-v3 styles globally. Previously imported inside component
+    // `<script setup>` blocks, which Vite split into per-component CSS chunks.
+    // On some browsers (observed on Chrome macOS) those chunks failed to apply
+    // in time, leaving the toolbar as unstyled letter fallbacks ("B I S H")
+    // and dropdowns rendered inline. Global import guarantees the CSS is in
+    // the main bundle before md-editor mounts.
+    'md-editor-v3/lib/style.css',
+    'md-editor-v3/lib/preview.css',
+  ],
 
   vite: {
     plugins: [tailwindcss()],

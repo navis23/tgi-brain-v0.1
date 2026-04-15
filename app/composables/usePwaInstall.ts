@@ -17,11 +17,12 @@ const initialized = ref(false)
 
 const checkStandalone = () => {
   if (typeof window === 'undefined') return false
-  // iOS legacy flag + standard display-mode check
+  // iOS legacy flag + standard display-mode check.
+  // Only match `standalone` — `minimal-ui` and `fullscreen` can spuriously
+  // match regular browser tabs on some Chrome builds (observed on macOS),
+  // which would hide the install button inside a normal tab.
   const iosStandalone = (window.navigator as unknown as { standalone?: boolean }).standalone === true
   const displayStandalone = window.matchMedia('(display-mode: standalone)').matches
-    || window.matchMedia('(display-mode: minimal-ui)').matches
-    || window.matchMedia('(display-mode: fullscreen)').matches
   return iosStandalone || displayStandalone
 }
 
@@ -71,6 +72,14 @@ export const usePwaInstall = () => {
     mq.addEventListener?.('change', (e) => {
       if (e.matches) isStandalone.value = true
     })
+
+    // Expose state on window for debugging installability from DevTools.
+    // Inspect via: __pwaDebug.deferredPrompt / isStandalone / isIos
+    ;(window as Window & { __pwaDebug?: unknown }).__pwaDebug = {
+      get deferredPrompt() { return deferredPrompt.value },
+      get isStandalone() { return isStandalone.value },
+      get isIos() { return isIos.value },
+    }
   }
 
   // Can we show any install UI? (Chromium prompt available, OR iOS manual hint, AND not installed)

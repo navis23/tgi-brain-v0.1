@@ -133,7 +133,7 @@
 
 <script setup lang="ts">
 import { MdPreview } from 'md-editor-v3'
-import 'md-editor-v3/lib/preview.css'
+// Styles loaded globally via nuxt.config.ts `css` array.
 definePageMeta({
     layout: 'reading'
 })
