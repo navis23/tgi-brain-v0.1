@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col min-h-screen md:h-auto overflow-hidden md:overflow-visible">
         <!-- Header -->
-        <AppHeader @open-capture="openCapture" />
+        <AppHeader />
 
         <!-- Main content container -->
         <div class="flex-1 flex flex-col p-4 md:p-8 gap-6 md:gap-8 overflow-y-auto">
@@ -148,9 +148,9 @@
                                 <Icon name="lucide:inbox" class="w-8 h-8" />
                             </div>
                             <p class="text-sm font-display font-bold uppercase">Ledger is empty</p>
-                            <button @click="openCapture"
+                            <NuxtLink to="/notes/new"
                                 class="text-xs font-mono mt-2 bg-brain-900 text-white px-3 py-2 cursor-pointer font-bold uppercase border-2 border-transparent hover:border-brain-900 hover:bg-white hover:text-brain-900 transition-colors">Generate
-                                first entry</button>
+                                first entry</NuxtLink>
                         </div>
                     </div>
                 </div>
@@ -222,18 +222,11 @@
             </div>
         </div>
 
-        <!-- Capture Modal for editing via Dashboard -->
-        <CaptureModal :edit-note="selectedNote" @close="selectedNote = null; showCapture = false" v-if="showCapture" />
     </div>
 </template>
 
 <script setup lang="ts">
-import type { Note } from '~/types'
-
 const notesStore = useNotesStore()
-
-const showCapture = ref(false)
-const selectedNote = ref<Note | null>(null)
 
 const stats = computed(() => {
     let pipeline = 0
@@ -255,16 +248,6 @@ const recentNotes = computed(() => {
         .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
         .slice(0, 8)
 })
-
-const openCapture = () => {
-    selectedNote.value = null
-    showCapture.value = true
-}
-
-const editNote = (note: Note) => {
-    selectedNote.value = note
-    showCapture.value = true
-}
 
 const formatDate = (dateStr: string) => {
     const date = new Date(dateStr)

@@ -108,7 +108,7 @@
         <!-- Main Markdown Content -->
         <!-- Switch MDPreview theme to light and apply white-paper prose styles -->
         <div
-            class="prose prose-sm md:prose-base max-w-none prose-brain font-sans text-brain-900 pt-4 border-t-2 border-brain-900 dashed-border relative">
+            class="prose prose-sm md:prose-base max-w-none prose-brain font-sans text-brain-900 pt-4 border-t-2 border-brain-900 dashed-border relative w-full min-w-0 overflow-x-hidden">
             <ClientOnly>
                 <MdPreview :model-value="note.content" theme="light" :editor-id="`read-preview-${note.id}`"
                     class="bg-transparent! text-brain-900! md:text-lg leading-relaxed!" />
@@ -119,19 +119,14 @@
             </ClientOnly>
         </div>
 
-        <!-- Capture modal override for editing in-place -->
-        <Teleport to="body">
-            <CaptureModal :edit-note="selectedEditNote" @close="selectedEditNote = null" v-if="selectedEditNote" />
-        </Teleport>
-
         <!-- Top Nav Actions (Teleported to layout) -->
         <Teleport to="#reading-header-actions">
-            <button @click="editNote"
+            <NuxtLink :to="`/notes/${note.id}/edit`"
                 class="brutal-btn flex items-center gap-2 px-6 py-2 border-2 border-brain-900 bg-brain-900 text-white shadow-[2px_2px_0px_#F4F4F0] cursor-pointer text-xs">
                 <Icon name="lucide:pencil" class="w-4 h-4" />
                 <span class="hidden md:inline font-display font-bold uppercase tracking-widest">Amend Record</span>
                 <span class="md:hidden font-display font-bold uppercase">Amend</span>
-            </button>
+            </NuxtLink>
         </Teleport>
     </article>
 </template>
@@ -139,8 +134,6 @@
 <script setup lang="ts">
 import { MdPreview } from 'md-editor-v3'
 import 'md-editor-v3/lib/preview.css'
-import type { Note } from '~/types'
-
 definePageMeta({
     layout: 'reading'
 })
@@ -150,19 +143,12 @@ const notesStore = useNotesStore()
 
 const noteId = route.params.id as string
 const loading = ref(true)
-const selectedEditNote = ref<Note | null>(null)
 
 const note = computed(() => notesStore.notes.find(n => n.id === noteId) || null)
 
 useHead({
     title: computed(() => note.value ? `${note.value.title} — Archive` : 'Reading — Archive')
 })
-
-const editNote = () => {
-    if (note.value) {
-        selectedEditNote.value = note.value
-    }
-}
 
 const wordCount = (content: string) => content.trim().split(/\s+/).filter(Boolean).length
 
@@ -287,5 +273,63 @@ onMounted(async () => {
 
 .prose-brain li > p {
     margin-bottom: 0.25em;
+}
+
+/* Tables: horizontally scrollable so wide tables don't blow out the page on mobile.
+   md-editor-v3 renders tables inside a .md-editor-preview root. We wrap every
+   table in a block-level scroll container so the table itself never forces the
+   parent to grow beyond the viewport. */
+.md-editor-preview,
+.prose-brain {
+    max-width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+}
+
+.md-editor-preview table,
+.prose-brain table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-collapse: collapse;
+    border: 2px solid #111111;
+    box-shadow: 4px 4px 0 #111111;
+    background: #ffffff;
+    margin: 1.25rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+}
+
+.md-editor-preview table > *,
+.prose-brain table > * {
+    min-width: max-content;
+}
+
+.md-editor-preview th,
+.md-editor-preview td,
+.prose-brain th,
+.prose-brain td {
+    border: 1px solid #111111;
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    white-space: nowrap;
+    vertical-align: top;
+}
+
+.md-editor-preview thead,
+.prose-brain thead {
+    background: #f0f0f0;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+/* Neutralise md-editor's own .table-container wrapper (if present) so it doesn't
+   double-wrap / force its own width. */
+.md-editor-preview .table-container {
+    display: contents;
 }
 </style>

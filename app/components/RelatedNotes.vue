@@ -26,7 +26,7 @@
             class="flex items-center gap-3 px-3 py-2.5 border-2 border-brain-900 bg-white group hover:shadow-[2px_2px_0px_#111] transition-all"
           >
             <NuxtLink
-              :to="`/notes/${rel.linkedNote.id}`"
+              :to="`/notes/${rel.linkedNote.id}?from=${props.noteId}`"
               class="flex-1 min-w-0 flex items-center gap-3"
             >
               <Icon name="lucide:file-text" class="w-4 h-4 text-brain-400 shrink-0" />

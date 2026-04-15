@@ -25,18 +25,16 @@
             </div>
 
             <!-- New Note button -->
-            <button @click="$emit('openCapture')"
+            <NuxtLink to="/notes/new"
                 class="brutal-btn flex items-center gap-2 px-5 py-2.5 bg-brain-900 border-2 border-transparent text-[10px] font-display font-bold uppercase tracking-widest text-white shadow-[2px_2px_0px_#F4F4F0] hover:-translate-y-0.5 transition-transform duration-100 cursor-pointer whitespace-nowrap">
                 <Icon name="lucide:plus-square" class="w-4 h-4" />
                 Execute Input
-            </button>
+            </NuxtLink>
         </div>
     </header>
 </template>
 
 <script setup lang="ts">
-defineEmits(['openCapture'])
-
 const filterStore = useFilterStore()
 const notesStore = useNotesStore()
 const isSidebarOpen = useState('sidebarOpen')
