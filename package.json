@@ -1,6 +1,6 @@
 {
   "name": "tgi-brain",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "private": true,
   "scripts": {
@@ -28,6 +28,8 @@
   "devDependencies": {
     "@iconify-json/lucide": "^1.2.101",
     "@nuxt/icon": "^2.2.1",
-    "@types/d3": "^7.4.3"
+    "@types/d3": "^7.4.3",
+    "@vite-pwa/nuxt": "^1.1.1",
+    "sharp": "^0.34.5"
   }
 }
