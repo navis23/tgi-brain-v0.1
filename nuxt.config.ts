@@ -25,7 +25,10 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap' },
         { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
-        { rel: 'mask-icon', href: '/pwa-icon.svg', color: '#111111' }
+        { rel: 'mask-icon', href: '/pwa-icon.svg', color: '#111111' },
+        // Explicit manifest link — defensive in case vite-pwa's auto-inject
+        // is bypassed in SPA mode. Chrome needs this to detect installability.
+        { rel: 'manifest', href: '/manifest.webmanifest' }
       ],
       // Capture `beforeinstallprompt` as early as possible — before the JS
       // bundle loads. Chrome fires it during initial page load; if we wait
@@ -83,9 +86,26 @@ export default defineNuxtConfig({
     },
     workbox: {
       globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
-      navigateFallback: '/',
-      navigateFallbackDenylist: [/^\/api\//],
+      // Ensure a broken/old SW is replaced immediately on new deploys.
+      skipWaiting: true,
+      clientsClaim: true,
+      cleanupOutdatedCaches: true,
+      // NOTE: no `navigateFallback: '/'` — Nuxt SPA precaches `index.html`
+      // under that filename, not under `/`, so `createHandlerBoundToURL('/')`
+      // throws `non-precached-url`. Handle navigations via runtime caching
+      // (NetworkFirst) below instead.
       runtimeCaching: [
+        // SPA navigations: always try network, fall back to cache offline.
+        {
+          urlPattern: ({ request }) => request.mode === 'navigate',
+          handler: 'NetworkFirst',
+          options: {
+            cacheName: 'pages',
+            networkTimeoutSeconds: 3,
+            expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 * 7 },
+            cacheableResponse: { statuses: [0, 200] },
+          },
+        },
         {
           urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,
           handler: 'CacheFirst',
