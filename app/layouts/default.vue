@@ -13,8 +13,6 @@
       </div>
     </div>
 
-    <!-- Capture Modal (global) -->
-    <CaptureModal />
   </div>
 </template>
 

@@ -54,12 +54,12 @@
                 </button>
 
                 <!-- New Note -->
-                <button @click="showCapture = true"
+                <NuxtLink to="/notes/new"
                     class="brutal-btn flex items-center gap-2 px-5 py-2 h-10 text-xs font-bold text-white bg-brain-900 shadow-[2px_2px_0px_#111] cursor-pointer">
                     <Icon name="lucide:plus-square" class="w-4 h-4" />
                     <span class="hidden md:inline font-mono tracking-widest uppercase">Input Data</span>
                     <span class="md:hidden uppercase">Input</span>
-                </button>
+                </NuxtLink>
             </div>
         </div>
 
@@ -187,7 +187,7 @@
                                             </button>
                                         </template>
                                         <template v-else>
-                                            <button @click.stop="editingNote = note; showCapture = true"
+                                            <button @click.stop="navigateTo(`/notes/${note.id}/edit`)"
                                                 class="brutal-btn p-1.5 bg-[#FFDD00] text-brain-900 border-2 border-brain-900 shadow-[1px_1px_0px_#111]">
                                                 <Icon name="lucide:edit-3" class="w-4 h-4" />
                                             </button>
@@ -307,7 +307,7 @@
                                                 </button>
                                             </template>
                                             <template v-else>
-                                                <button @click.stop="editingNote = note; showCapture = true"
+                                                <button @click.stop="navigateTo(`/notes/${note.id}/edit`)"
                                                     class="brutal-btn p-2 bg-white text-brain-900" title="Edit">
                                                     <Icon name="lucide:edit-3" class="w-4 h-4" />
                                                 </button>
@@ -413,8 +413,6 @@
             </div>
         </div>
 
-        <!-- Capture modal (inline override for editing) -->
-        <CaptureModal :edit-note="editingNote" @close="editingNote = null; showCapture = false" v-if="showCapture" />
     </div>
 </template>
 
@@ -432,9 +430,7 @@ const notesStore = useNotesStore()
 const filterStore = useFilterStore()
 const isSidebarOpen = useState('sidebarOpen')
 
-const editingNote = ref<Note | null>(null)
 const confirmDeleteId = ref<string | null>(null)
-const showCapture = ref(false)
 const showFilters = ref(false)
 const localSearch = ref(filterStore.searchQuery)
 const currentPage = ref(1)
