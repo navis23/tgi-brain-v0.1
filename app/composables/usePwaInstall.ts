@@ -43,6 +43,19 @@ export const usePwaInstall = () => {
     isStandalone.value = checkStandalone()
     isIos.value = detectIos()
 
+    // Pick up a prompt that was captured by the inline <head> script before
+    // the JS bundle loaded. Chrome fires `beforeinstallprompt` very early —
+    // often before any framework code runs — so the inline script is the only
+    // reliable way to catch it. We collect the stashed value here and delete
+    // it from window to avoid leaking a reference.
+    const w = window as Window & { __pwaPrompt?: BeforeInstallPromptEvent }
+    if (w.__pwaPrompt) {
+      deferredPrompt.value = w.__pwaPrompt
+      delete w.__pwaPrompt
+    }
+
+    // Also keep listening for future fires (e.g. after the user dismisses and
+    // Chrome re-evaluates installability, or in browsers that fire it later).
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault()
       deferredPrompt.value = e as BeforeInstallPromptEvent
