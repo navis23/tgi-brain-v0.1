@@ -22,7 +22,7 @@
     >
 
     <!-- Logo - Brutalist Header -->
-    <div class="px-6 py-6 border-b-2 border-brain-900 shrink-0 bg-brain-900 text-brain-50">
+    <div class="px-6 py-6 border-b-2 border-brain-900 shrink-0 bg-brain-900 text-brain-50 safe-top">
       <div class="flex items-center gap-3">
         <div class="flex-1 min-w-0">
           <h1 class="text-xl font-display font-bold tracking-tight uppercase leading-none">THE ARCHIVE</h1>
@@ -105,7 +105,7 @@
     </div>
 
     <!-- User info / Footer -->
-    <div class="border-t-2 border-brain-900 shrink-0 bg-white">
+    <div class="border-t-2 border-brain-900 shrink-0 bg-white safe-bottom">
       <!-- PWA install affordance (auto-hides when already installed) -->
       <div class="empty:hidden px-4 py-3 [&:not(:has(button))]:hidden border-b-2 border-brain-900">
         <InstallPwaButton />

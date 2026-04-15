@@ -1,10 +1,10 @@
 <template>
-  <div class="min-h-screen w-full bg-brain-50 text-brain-900 font-sans selection:bg-brain-900 selection:text-white flex flex-col pt-[72px]">
+  <div class="min-h-screen w-full bg-brain-50 text-brain-900 font-sans selection:bg-brain-900 selection:text-white flex flex-col" style="padding-top: calc(72px + env(safe-area-inset-top, 0px));">
 
     <!-- Architectural Grid Background -->
     <div class="fixed inset-0 z-0 pointer-events-none opacity-10" style="background-size: 24px 24px; background-image: linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px);"></div>
 
-    <header class="fixed top-0 left-0 w-full z-40 border-b-2 border-brain-900 bg-white">
+    <header class="fixed top-0 left-0 w-full z-40 border-b-2 border-brain-900 bg-white safe-top">
       <div class="max-w-4xl mx-auto w-full px-6 py-4 flex items-center justify-between">
         <div class="flex items-center gap-4">
           <!-- Linked-record chain: step back one note -->
