@@ -106,6 +106,10 @@
 
     <!-- User info / Footer -->
     <div class="border-t-2 border-brain-900 shrink-0 bg-white">
+      <!-- PWA install affordance (auto-hides when already installed) -->
+      <div class="empty:hidden px-4 py-3 [&:not(:has(button))]:hidden border-b-2 border-brain-900">
+        <InstallPwaButton />
+      </div>
       <div class="flex items-center gap-3 px-4 py-3 border-b-2 border-brain-900">
         <div class="flex-1 min-w-0">
           <p class="text-xs font-display font-bold text-brain-900 uppercase truncate">{{ userName }}</p>

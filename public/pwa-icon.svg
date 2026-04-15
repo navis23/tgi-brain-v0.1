@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#111111"/>
+  <g transform="translate(0, 0)">
+    <rect x="40.96" y="40.96" width="430.08" height="430.08" fill="none" stroke="#FAF9F6" stroke-width="10.24"/>
+    <rect x="48.96" y="48.96" width="430.08" height="430.08" fill="none" stroke="#4B4DED" stroke-width="5.12"/>
+    <text x="256" y="256" font-family="Space Grotesk, Helvetica, Arial, sans-serif" font-weight="700" font-size="143" fill="#FAF9F6" text-anchor="middle" dominant-baseline="central" letter-spacing="-2">TGI</text>
+    <text x="256" y="363.25" font-family="JetBrains Mono, monospace" font-weight="700" font-size="36" fill="#4B4DED" text-anchor="middle" dominant-baseline="central" letter-spacing="3">BRAIN</text>
+  </g>
+</svg>
